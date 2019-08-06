@@ -60,5 +60,12 @@ namespace Order_Manager.Controllers
             var products = new OrderServices(_cxt).GetProducts();
             return Json(products);
         }
+
+        [HttpGet("GetCarts")]
+        public IActionResult GetCarts()
+        {
+            List<CartViewModel> carts = new OrderServices(_cxt).GetAllCarts();
+            return Json(carts);
+        }
     }
 }

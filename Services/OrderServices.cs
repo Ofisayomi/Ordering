@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Order_Manager.Models;
 using Order_Manager.Models.Domain;
+using Order_Manager.Models.ViewModels;
 
 namespace Order_Manager.Services {
     public class OrderServices {
@@ -73,6 +74,23 @@ namespace Order_Manager.Services {
             return distos.First ();
         }
 
+        public List<CartViewModel> GetAllCarts (){
+            List<CartViewModel> carts = new List<CartViewModel>();
+            var cart = (from c in _cxt.Carts join o in _cxt.Offices on c.OfficeId equals o.OfficeId select new {
+                c.CustomerName,
+                o.Description,
+                c.PhoneNumber,
+                c.Email
+            }).ToList();
+            cart.ForEach(car=>{
+                CartViewModel mode = new CartViewModel();
+                mode.customername = car.CustomerName;
+                mode.office = car.Description;
+                mode.phoneno = car.PhoneNumber;
+                carts.Add(mode);
+            });
+            return carts;
+        }
         public class Distances {
             public int OfficeId { get; set; }
             public double distance { get; set; }
